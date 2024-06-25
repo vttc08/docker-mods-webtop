@@ -1,9 +1,11 @@
 #!/usr/bin/with-contenv bash
 
+echo "Hello from postinstall"
 # Download subtitle edit
 curl -s https://api.github.com/repos/SubtitleEdit/subtitleedit/releases/latest | grep -E "browser_download_url.*SE[0-9]*\.zip" | cut -d : -f 2,3 | tr -d \" | wget -qi - -O SE.zip
 unzip SE.zip -d /config/subtitle-edit
 rm SE.zip
 
 # Copy policies.json
+mkdir -p /etc/firefox/policies
 cp /defaults/policies.json /etc/firefox/policies/policies.json
