@@ -31,4 +31,4 @@ if [ -f /usr/bin/apt ]; then
 fi
 
 chown -R root:root /root
-chmod -R 600 /root/.ssh
+# chmod -R 600 /root/.ssh
