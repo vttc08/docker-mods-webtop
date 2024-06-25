@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bash
+echo "Hello from docker mods."
 
 if [ -f /usr/bin/apt ]; then
     ## Ubuntu
