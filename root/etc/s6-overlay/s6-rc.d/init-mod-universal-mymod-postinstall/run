@@ -9,3 +9,6 @@ rm SE.zip
 # Copy policies.json
 mkdir -p /etc/firefox/policies
 cp /defaults/policies.json /etc/firefox/policies/policies.json
+
+# Final Touch
+sudo apt install lxappearance spacefm tint2 nitrogen -y

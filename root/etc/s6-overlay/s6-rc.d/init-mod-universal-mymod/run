@@ -8,12 +8,7 @@ if [ -f /usr/bin/apt ]; then
         terminator \
         rsync \
         ntp \
-        spacefm \
-        compton \
-        tint2 \
-        nitrogen \
         nano \
-        lxappearance \
         mousepad \
         unrar \
         unzip \
@@ -27,7 +22,8 @@ if [ -f /usr/bin/apt ]; then
         fonts-wqy-zenhei \
         language-pack-zh-hans \
         mediainfo \
-        mediainfo-gui" >> /mod-repo-packages-to-install.list
+        mediainfo-gui\
+        compton" >> /mod-repo-packages-to-install.list
 fi
 
 chown -R root:root /root
