@@ -3,7 +3,7 @@ name: Build Image
 on: [push, pull_request, workflow_dispatch]
 
 env:
-  ENDPOINT: "user/endpoint"
+  ENDPOINT: "vttc08/docker-mods-webtop"
   BRANCH: "master"
 
 jobs:
@@ -29,11 +29,11 @@ jobs:
         run: |
           echo "CR_USER=${{ secrets.CR_USER }}" >> $GITHUB_ENV
           echo "CR_PAT=${{ secrets.CR_PAT }}" >> $GITHUB_ENV
-          echo "DOCKERUSER=${{ secrets.DOCKERUSER }}" >> $GITHUB_ENV
-          echo "DOCKERPASS=${{ secrets.DOCKERPASS }}" >> $GITHUB_ENV
-          if [[ "${{ secrets.CR_USER }}" == "" && "${{ secrets.CR_PAT }}" == "" && "${{ secrets.DOCKERUSER }}" == "" && "${{ secrets.DOCKERPASS }}" == "" ]]; then
+          echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
+          echo "DOCKERHUB_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}" >> $GITHUB_ENV
+          if [[ "${{ secrets.CR_USER }}" == "" && "${{ secrets.CR_PAT }}" == "" && "${{ secrets.DOCKERHUB_USERNAME }}" == "" && "${{ secrets.DOCKERHUB_TOKEN }}" == "" ]]; then
             echo "::error::Push credential secrets missing."
-            echo "::error::You must set either CR_USER & CR_PAT or DOCKERUSER & DOCKERPASS as secrets in your repo settings."
+            echo "::error::You must set either CR_USER & CR_PAT or DOCKERHUB_USERNAME & DOCKERHUB_TOKEN as secrets in your repo settings."
             echo "::error::See https://github.com/linuxserver/docker-mods/blob/master/README.md for more information/instructions."
             exit 1
           fi
@@ -50,12 +50,12 @@ jobs:
           docker push ghcr.io/${ENDPOINT}
 
       - name: Login to DockerHub
-        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT != 'user/endpoint' }}
+        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERHUB_USERNAME && env.DOCKERHUB_TOKEN && env.ENDPOINT != 'user/endpoint' }}
         run: |
-          echo ${{ secrets.DOCKERPASS }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Push tags to DockerHub
-        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT != 'user/endpoint' }}
+        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERHUB_USERNAME && env.DOCKERHUB_TOKEN && env.ENDPOINT != 'user/endpoint' }}
         run: |
           docker push ${ENDPOINT}:${{ github.sha }}
           docker push ${ENDPOINT}
