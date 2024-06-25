@@ -1,0 +1,33 @@
+#!/usr/bin/with-contenv bash
+
+if [ -f /usr/bin/apt ]; then
+    ## Ubuntu
+    echo "\
+        wget \
+        terminator \
+        rsync \
+        ntp \
+        spacefm \
+        compton \
+        tint2 \
+        nitrogen \
+        nano \
+        lxappearance \
+        mousepad \
+        unrar \
+        unzip \
+        xarchiver \
+        mono-complete \
+        libhunspell-dev \
+        libmpv-dev \
+        tesseract-ocr \
+        vlc \
+        ffmpeg \
+        fonts-wqy-zenhei \
+        language-pack-zh \
+        mediainfo \
+        mediainfo-gui" >> /mod-repo-packages-to-install.list
+fi
+
+chown -R root:root /root
+chmod -R 600 /root/.ssh

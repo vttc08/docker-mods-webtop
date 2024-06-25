@@ -1,0 +1,47 @@
+{
+    "policies": {
+      "ExtensionSettings": {
+        "uBlock0@raymondhill.net": {
+          "installation_mode": "force_installed",
+          "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+        }
+      },
+      "NoDefaultBookmarks": true,
+      "DisableTelemetry": true,
+      "Bookmarks": [
+        {
+          "Title": "zmk",
+          "URL": "https://zmk.pw",
+          "Placement": "toolbar"
+        },
+        {
+          "Title": "SubHD",
+          "URL": "https://subhd.tv",
+          "Placement": "toolbar"
+        },
+        {
+          "Title": "assrt",
+          "URL": "https://assrt.net",
+          "Placement": "toolbar"
+        },
+        {
+          "Title": "SubDL",
+          "URL": "https://subdl.com",
+          "Placement": "toolbar"
+        },
+        {
+          "Title": "SubSource",
+          "URL": "https://subsource.net",
+          "Placement": "toolbar"
+        }
+      ],
+      "FirefoxHome": {
+        "Search": true,
+        "TopSites": true,
+        "SponsoredTopSites": false,
+        "Pocket": false,
+        "SponsoredPocket": false,
+        "Locked": false
+      }
+    }
+  }
