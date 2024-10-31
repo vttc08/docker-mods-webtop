@@ -21,6 +21,7 @@ if [ -f /usr/bin/apt ]; then
         ffmpeg \
         fonts-wqy-zenhei \
         language-pack-zh-hans \
+        fzf \
         mediainfo \
         mediainfo-gui\
         compton" >> /mod-repo-packages-to-install.list
