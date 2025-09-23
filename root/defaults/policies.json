@@ -4,6 +4,14 @@
         "uBlock0@raymondhill.net": {
           "installation_mode": "force_installed",
           "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+        },
+        "{836542c1-f294-4421-8b7d-8b2649c1a5d8}": {
+          "installation_mode": "force_installed",
+          "install_url": "https://addons.mozilla.org/firefox/downloads/latest/tampermonkey/latest.xpi"
+        },
+        "foxyproxy@eric.h.jung": {
+          "installation_mode": "force_installed",
+          "install_url": "https://addons.mozilla.org/firefox/downloads/latest/foxyproxy-standard/latest.xpi"
         }
       },
       "NoDefaultBookmarks": true,
