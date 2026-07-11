@@ -7,7 +7,6 @@ if [ -f /usr/bin/apt ]; then
         wget \
         terminator \
         rsync \
-        ntp \
         nano \
         mousepad \
         unrar \
