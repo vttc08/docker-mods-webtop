@@ -1,0 +1,58 @@
+FROM ubuntu:26.04 AS builder
+
+ARG SPACEFM_VERSION=1.0.6+gtk2.20260815
+ARG SPACEFM_COMMIT=e6f291858067e73db44fb57c90e4efb97b088ac8
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf automake build-essential ca-certificates dpkg-dev gettext git \
+    intltool libdbus-1-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
+    libgtk2.0-dev libpango1.0-dev libstartup-notification0-dev libtool \
+    libudev-dev libx11-dev pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/IgnorantGuru/spacefm.git /tmp/spacefm && \
+    cd /tmp/spacefm && git checkout "${SPACEFM_COMMIT}"
+
+WORKDIR /tmp/spacefm
+
+# Compatibility fixes required by SpaceFM 1.0.6 on Ubuntu 26.04.
+RUN sed -i 's/ptk_dir_tree_new( TRUE )/ptk_dir_tree_new()/' \
+      src/ptk/ptk-dir-tree-view.c && \
+    sed -i 's/void (\\*show) () = NULL;/void (*show)(gpointer) = NULL;/' \
+      src/ptk/ptk-file-misc.c && \
+    sed -i '/#include <sys\\/types.h>/a #include <sys\\/sysmacros.h>' src/main.c
+
+RUN ./configure --prefix=/usr --with-gtk2 --disable-video-thumbnails && \
+    make -j"$(nproc)" CFLAGS='-std=gnu17 -fcommon -O2 \
+      -Wno-error=incompatible-pointer-types \
+      -Wno-incompatible-pointer-types \
+      -Wno-error=implicit-function-declaration' && \
+    rm -rf /pkg /out && make DESTDIR=/pkg install
+
+RUN mkdir -p /pkg/DEBIAN /out && \
+    printf '%s\n' \
+      'Package: spacefm-gtk2-custom' \
+      "Version: ${SPACEFM_VERSION}" \
+      'Section: utils' \
+      'Priority: optional' \
+      'Architecture: amd64' \
+      'Maintainer: Custom webtop build' \
+      'Depends: bash, libgtk2.0-0t64, libglib2.0-0t64, libgdk-pixbuf-2.0-0, libstartup-notification0, libudev1, shared-mime-info, desktop-file-utils' \
+      'Conflicts: spacefm' \
+      'Replaces: spacefm' \
+      'Description: SpaceFM file manager built against GTK2' \
+      ' GTK2 build used to avoid the GTK3/GDK crash in Ubuntu webtop.' \
+      > /pkg/DEBIAN/control && \
+    printf '%s\n' '#!/bin/sh' 'set -e' \
+      'update-desktop-database /usr/share/applications >/dev/null 2>&1 || true' \
+      'gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor >/dev/null 2>&1 || true' \
+      'exit 0' > /pkg/DEBIAN/postinst && \
+    chmod 755 /pkg/DEBIAN/postinst && \
+    strip --strip-unneeded /pkg/usr/bin/spacefm && \
+    dpkg-deb --build --root-owner-group /pkg \
+      "/out/spacefm-gtk2-custom_${SPACEFM_VERSION}_amd64.deb"
+
+FROM scratch
+COPY --from=builder /out/ /
