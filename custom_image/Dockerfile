@@ -9,7 +9,7 @@ COPY spacefm-dist/spacefm-gtk2-custom_${SPACEFM_VERSION}_amd64.deb /tmp/
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       /tmp/spacefm-gtk2-custom_${SPACEFM_VERSION}_amd64.deb \
-      wget curl rsync vim unrar unzip xarchiver p7zip libmpv-dev vlc \
+      wget curl rsync vim unrar unzip xarchiver p7zip libmpv2 vlc \
       ffmpeg mediainfo mediainfo-gui fzf firefox less && \
     rm -f /tmp/spacefm-gtk2-custom_*.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
