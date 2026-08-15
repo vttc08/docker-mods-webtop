@@ -20,9 +20,9 @@ WORKDIR /tmp/spacefm
 # Compatibility fixes required by SpaceFM 1.0.6 on Ubuntu 26.04.
 RUN sed -i 's/ptk_dir_tree_new( TRUE )/ptk_dir_tree_new()/' \
       src/ptk/ptk-dir-tree-view.c && \
-    sed -i 's/void (\\*show) () = NULL;/void (*show)(gpointer) = NULL;/' \
+    sed -i 's/void (\*show) () = NULL;/void (*show)(gpointer) = NULL;/' \
       src/ptk/ptk-file-misc.c && \
-    sed -i '/#include <sys\\/types.h>/a #include <sys\\/sysmacros.h>' src/main.c
+    sed -i '/#include <sys\/types.h>/a #include <sys/sysmacros.h>' src/main.c
 
 RUN ./configure --prefix=/usr --with-gtk2 --disable-video-thumbnails && \
     make -j"$(nproc)" CFLAGS='-std=gnu17 -fcommon -O2 \
